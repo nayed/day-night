@@ -93,7 +93,6 @@ class App extends Component {
   }
 
   render() {
-    // console.log(this.state.theme)
     return (
       <>
         <GlobalStyles {...this.state} />
