@@ -80,23 +80,52 @@ class App extends Component {
   constructor(props) {
     super(props)
 
-    this.state = {
-      theme: themes.light
+    let theme = ''
+    let checked = false
+
+    switch (localStorage.getItem('theme')) {
+      case 'light':
+        theme = themes.light
+        checked = false
+        break
+      case 'dark':
+        theme = themes.dark
+        checked = true
+        break
+      default:
+        theme = themes.light
+        checked = false
+        break
     }
+
+    this.state = {
+      theme,
+      checked
+    }
+
     this.toggleTheme = this.toggleTheme.bind(this)
   }
 
   toggleTheme() {
-    this.setState(state => ({
-      theme: state.theme === themes.dark ? themes.light : themes.dark
-    }))
+    if (this.state.theme === themes.dark) {
+      this.setState({ theme: themes.light, checked: false })
+      localStorage.setItem('theme', 'light')
+    } else {
+      this.setState({ theme: themes.dark, checked: true })
+      localStorage.setItem('theme', 'dark')
+    }
   }
 
   render() {
     return (
       <>
         <GlobalStyles {...this.state} />
-        <Input type="checkbox" id="switch" onChange={this.toggleTheme} />
+        <Input
+          type="checkbox"
+          id="switch"
+          defaultChecked={this.state.checked}
+          onChange={this.toggleTheme}
+        />
         <Label htmlFor="switch">Toggle</Label>
         <Sun {...this.state} />
       </>
